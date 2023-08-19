@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function(){
     
     //Select interface elements
     const inputEmail = document.querySelector('#email');
+    const inputEmailCC = document.querySelector('#emailCC');
     const inputAsunto = document.querySelector('#asunto');
     const inputMensaje = document.querySelector('#mensaje');
     const formulario = document.querySelector('#formulario');
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //Assign the events
     inputEmail.addEventListener('input', validar);
+    inputEmailCC.addEventListener('input', validarEmailCC);
     inputAsunto.addEventListener('input', validar);
     inputMensaje.addEventListener('input', validar);
     formulario.addEventListener('submit', enviarEmail);
@@ -54,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     function validar(e){
+
+        
+        
         if(e.target.value.trim() === ''){
             mostrarAlerta(`El campo ${e.target.id} es obligatorio`, e.target.parentElement);
              email[e.target.id] ='';
@@ -61,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function(){
             return;
         }
 
-        if( e.target.id === 'email' && !validarEmail(e.target.value)){
+        if( (e.target.id === 'email') && !validarEmail(e.target.value)){
+            
             mostrarAlerta("El email NO es valido", e.target.parentElement);
             email[e.target.id] ='';
             comprobarEmail();
@@ -72,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
         //asignar valores
         email[e.target.id] = e.target.value.trim().toLowerCase();
-        console.log(email);
 
         comprobarEmail();
+
     }
 
     function mostrarAlerta(mensaje, referencia){
@@ -102,6 +108,31 @@ document.addEventListener('DOMContentLoaded', function(){
         return resultado;
     }
 
+    function validarEmailCC(e){
+
+        email[e.target.id] = e.target.value.trim().toLowerCase();
+        if(!validarEmail(e.target.value)){
+            if(email.emailCC===''){
+                delete email.emailCC;
+                limpiarAlerta(e.target.parentElement)
+                comprobarEmail();
+                return;
+            }
+            mostrarAlerta('Email CC no valido', e.target.parentElement)
+            email[e.target.id] ='';
+            comprobarEmail();
+            return;
+        }
+
+        limpiarAlerta(e.target.parentElement);
+
+        //asignar valores
+        email[e.target.id] = e.target.value.trim().toLowerCase();
+
+        comprobarEmail();
+
+    }
+
     function comprobarEmail(){
         console.log(email);
         if( Object.values(email).includes('') ){
@@ -119,7 +150,9 @@ document.addEventListener('DOMContentLoaded', function(){
         email.email = '';
         email.asunto = '';
         email.mensaje = '';
+        email.emailCC = '';
         comprobarEmail();
     }
+
 
 });
