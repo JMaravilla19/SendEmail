@@ -125,10 +125,6 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         limpiarAlerta(e.target.parentElement);
-
-        //asignar valores
-        email[e.target.id] = e.target.value.trim().toLowerCase();
-
         comprobarEmail();
 
     }
